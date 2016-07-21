@@ -4,7 +4,7 @@ Laravel Set of Models to perform access to Contact and Company data models.
 
 ## Install
 
-##### Add Packge dependency to project composer.json
+#### Add Packge dependency to project composer.json
 
 ```
    "require": {
@@ -16,7 +16,7 @@ Laravel Set of Models to perform access to Contact and Company data models.
 
 Launch a ` composer update `
 
-##### Add Service Provider to /config/app.php
+#### Add Service Provider to /config/app.php
 
 ```
    'providers' => [
@@ -25,16 +25,17 @@ Launch a ` composer update `
            Topix\Hackademy\ContactToolSdk\ServiceProvider::class,
 ```
 
-Do a ` composer dump-autoload`
+Update the autoloader with: ` composer dump-autoload`
+Publish package files with: ` php artisan vendor:publish `
 
 ## Usage
 
 #### Setup
 
-To have access you need to set in Api.php class:
+To have access you need to set in /config/anagrafica.php:
 
 * Api Base Url: (EG: http://example.com/api/v1/)
-* Service Token
+* Service Token: (EG: YOUR-SERVICE-TOKEN)
 
 #### Classes
 
