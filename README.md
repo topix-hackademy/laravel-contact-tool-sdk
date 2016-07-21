@@ -16,7 +16,7 @@ Laravel Set of Models to perform access to Contact and Company data models.
 
 Launch a ` composer update `
 
-#### Add Service Provider to /config/app.php
+##### Add Service Provider to /config/app.php
 
 ```
    'providers' => [
@@ -44,10 +44,10 @@ Available classes are : Company, Contact, CompanyType, ContactType
 | Method | Parameters | Usage |
 | ------ | ---------- | ----- |
 | all    | \*  | Get all the entities |
-| get    | id         | Get an entity by ID |
+| get    | id         | Get an entity with the provoded ID |
 | create | data       | Crate an entity |
-| update | id, data   | Update the entity with the provoded ID |
-| delete | id         | Delte the entity with the provded ID |
+| update | id, data   | Update the entity with the provided ID |
+| delete | id         | Delte the entity with the provided ID |
 
 
 ## License
