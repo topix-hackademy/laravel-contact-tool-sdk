@@ -4,28 +4,24 @@ Laravel Set of Models to perform access to Contact and Company data models.
 
 ## Install
 
-Add Packge dependency to project composer.json
+##### Add Packge dependency to project composer.json
 
 ```
    "require": {
        "laravel/framework": "5.2.*",
-
        ...
-
-       "topix-hackademy/laravel-contact-tool-sdk": "dev-master"
+       "topix-hackademy/laravel-contact-tool-sdk": ">=0.0.1"
    },
 ```
 
 Launch a ` composer update `
 
-Add Service Provider to /config/app.php
+#### Add Service Provider to /config/app.php
 
 ```
    'providers' => [
            Illuminate\Auth\AuthServiceProvider::class,
-
            ...
-
            Topix\Hackademy\ContactToolSdk\ServiceProvider::class,
 ```
 
