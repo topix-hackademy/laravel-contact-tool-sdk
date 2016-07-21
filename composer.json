@@ -41,5 +41,6 @@
             "dev-master": "sprint-1"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

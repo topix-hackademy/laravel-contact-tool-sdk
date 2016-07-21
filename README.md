@@ -22,7 +22,7 @@ Available classes are : Company, Contact, CompanyType, ContactType
 
 | Method | Parameters | Usage |
 | ------ | ---------- | ----- |
-| all    | no params  | Get all the entities |
+| all    | \*  | Get all the entities |
 | get    | id         | Get an entity by ID |
 | create | data       | Crate an entity |
 | update | id, data   | Update the entity with the provoded ID |
