@@ -4,13 +4,38 @@ Laravel Set of Models to perform access to Contact and Company data models.
 
 ## Install
 
-Via Composer.
+Add Packge dependency to project composer.json
+
+```
+   "require": {
+       "laravel/framework": "5.2.*",
+
+       ...
+
+       "topix-hackademy/laravel-contact-tool-sdk": "dev-master"
+   },
+```
+
+Launch a ` composer update `
+
+Add Service Provider to /config/app.php
+
+```
+   'providers' => [
+           Illuminate\Auth\AuthServiceProvider::class,
+
+           ...
+
+           Topix\Hackademy\ContactToolSdk\ServiceProvider::class,
+```
+
+Do a ` composer dump-autoload`
 
 ## Usage
 
 #### Setup
 
-To have access you need to set in the package config file:
+To have access you need to set in Api.php class:
 
 * Api Base Url: (EG: http://example.com/api/v1/)
 * Service Token
