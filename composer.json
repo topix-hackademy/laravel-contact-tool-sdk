@@ -1,7 +1,7 @@
 {
     "name": "topix-hackademy/laravel-contact-tool-sdk",
     "type": "library",
-    "description": ":package_description",
+    "description": "Laravel Set of Models to perform access to Contact and Company data models.",
     "keywords": ["Topix", "Top-ix", "ContactToolSdk", "Laravel", "Hackademy"],
     "homepage": "https://github.com/topix-hackademy/laravel-contact-tool-sdk",
     "license": "MIT",
@@ -40,5 +40,6 @@
         "branch-alias": {
             "dev-master": "sprint-1"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
