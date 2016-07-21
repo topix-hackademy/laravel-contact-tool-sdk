@@ -3,6 +3,7 @@ namespace Topix\Hackademy\ContactToolSdk\Classes;
 
 class Api
 {
+
     public $apiBaseUri = '';
     public $authToken = '';
 
@@ -15,6 +16,7 @@ class Api
     public function put($uri, $data = []){
         return $this->call($uri,  $method = 'PUT', $data );
     }
+
     public function delete($uri, $data = []){
         // Delete is not implemented. To delete a resource use PUT verb and change the field is_valid
         $data['is_valid'] = false;
@@ -57,6 +59,7 @@ class Api
         if($method == 'DELETE'|| $method == 'delete' || $method == 'Delete'){
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
         }
 
         $response = curl_exec($ch);

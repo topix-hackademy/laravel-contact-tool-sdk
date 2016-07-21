@@ -1,7 +1,8 @@
 <?php
 namespace Topix\Hackademy\ContactToolSdk\Classes;
 
-abstract class AAnagrafica {
+abstract class AAnagrafica 
+{
 
     protected $api;
     protected $entity;
