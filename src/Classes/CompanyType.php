@@ -1,7 +1,7 @@
 <?php
 namespace Topix\Hackademy\ContactToolSdk\Classes;
 
-class Company extends AAnagrafica
+class CompanyType extends AAnagrafica
 {
     protected $entity = 'company-type';
 }

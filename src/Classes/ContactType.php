@@ -2,7 +2,7 @@
 namespace Topix\Hackademy\ContactToolSdk\Classes;
 
 
-class Contact extends AAnagrafica
+class ContactType extends AAnagrafica
 {
-    protected $entity = 'contact-type';
+    protected $entity = 'role';
 }
