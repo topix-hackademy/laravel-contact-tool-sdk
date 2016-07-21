@@ -26,6 +26,7 @@ Launch a ` composer update `
 ```
 
 Update the autoloader with: ` composer dump-autoload`
+
 Publish package files with: ` php artisan vendor:publish `
 
 ## Usage
