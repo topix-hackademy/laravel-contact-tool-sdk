@@ -1,7 +1,9 @@
 <?php
-namespace Topix\Hackademy\ContactToolSdk\Classes;
+namespace Topix\Hackademy\ContactToolSdk\Api\Entities;
 
-class Company extends AAnagrafica
+use Topix\Hackademy\ContactToolSdk\Api\Contract\Anagrafica;
+
+class Company extends Anagrafica
 {
     protected $entity = 'company';
 

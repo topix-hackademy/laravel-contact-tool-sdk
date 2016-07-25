@@ -1,7 +1,7 @@
 <?php
-namespace Topix\Hackademy\ContactToolSdk\Classes;
+namespace Topix\Hackademy\ContactToolSdk\Api;
 
-class Api
+class Client
 {
 
     public $apiBaseUri = '';

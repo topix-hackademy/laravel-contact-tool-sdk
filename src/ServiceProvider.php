@@ -2,6 +2,7 @@
 
 namespace Topix\Hackademy\ContactToolSdk;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -14,6 +15,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $configPath = __DIR__ . '/../config/anagrafica.php';
         $this->publishes([$configPath => $this->getConfigPath()], 'config');
+        $this->publishes([__DIR__.'/../database/migrations/' => database_path('migrations')], 'migrations');
+        
+        // Define Custom Polymorphic Types
+        Relation::morphMap([
+
+        ]);
+
     }
 
     /**
