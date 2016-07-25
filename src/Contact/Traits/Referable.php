@@ -10,7 +10,6 @@ use Topix\Hackademy\ContactToolSdk\Api\Entities\Contact;
 
 trait Referable
 {
-
     public $APIentities = [
         'contact' => "Topix\\Hackademy\\ContactToolSdk\\Api\\Entities\\Contact",
         'company' => "Topix\\Hackademy\\ContactToolSdk\\Api\\Entities\\Company",
@@ -18,14 +17,15 @@ trait Referable
 
     public function references()
     {
-        return $this->morphMany('Topix\Hackademy\ContactToolSdk\Contact\Models\Contact', 'referable');
+        return $this->morphOne('Topix\Hackademy\ContactToolSdk\Contact\Models\Contact', 'referable');
     }
 
+    // Return contact data if exists else return false
     public function getContact(){
 
         if( $this->checkIfLocalExist() ){
-            $contactType = $this->references[0]->external_entity_name;
-            $contactId = $this->references[0]->external_id;
+            $contactType = $this->references->external_entity_name;
+            $contactId = $this->references->external_id;
 
             $APIentity = new $contactType();
             return collect( \GuzzleHttp\json_decode($APIentity->get($contactId)) );
@@ -34,12 +34,7 @@ trait Referable
 
     }
 
-    /*
-     *  Create entitiy on API
-     *  $type: name of the entity in API (eg: contact, company ..)
-     *
-     */
-
+    // Create Local An remote Contact
     public function createContact($type, Array $data){
 
         // If a local ref exist update the reference
@@ -49,31 +44,29 @@ trait Referable
         // If there isn't a local reference create one
         $results = $this->createExternalContact($type, $data);
 
-        // @TODO check if results is an error
-        if( $results ) return $this->createReference($results->id, $this->APIentities[$type]);
-        return false;
+        // Check if results returns an error
+        if( $results ) $this->createReference($results->id, $this->APIentities[$type]);
+        return $results;
 
     }
 
-    // Update External Contact
+    // Update Local An Remote Contact
     public function updateContact($data){
 
         // Get Local Polimorph related data
-        $contactType = $this->references[0]->external_entity_name;
-        $contactId = $this->references[0]->external_id;
+        $contactType = $this->references->external_entity_name;
+        $contactId = $this->references->external_id;
 
         // Update Remote Entity trough API
         $results = $this->updateExternalContact($data);
 
-        if( $results ) return $this->updateReference( $results->id, $contactType);
-        return false;
+        // Check if results returns an error
+        if( $results ) $this->updateReference( $results->id, $contactType);
+        return $results;
 
     }
 
-    /*
-     * API
-     *
-    */
+    /* Remote Entities methods*/
 
     // Create Remote Entity trough API
     // Return false in case of error
@@ -83,8 +76,9 @@ trait Referable
         $APIentity = new $this->APIentities[$contactType]();
         $results = $APIentity->create($contactData);
 
+        // Check if results returns an error
         if( $results ) return \GuzzleHttp\json_decode($results);
-        return false;
+        return $results;
 
     }
 
@@ -93,21 +87,19 @@ trait Referable
     public function updateExternalContact(Array $contactData){
 
         // Get Local Polimorph related data
-        $contactType = $this->references[0]->external_entity_name;
-        $contactId = $this->references[0]->external_id;
+        $contactType = $this->references->external_entity_name;
+        $contactId = $this->references->external_id;
 
         // Update Remote Entity trough API
         $APIentity = new $contactType();
         $results = $APIentity->update($contactId, $contactData);
 
+        // Check if results returns an error
         if( $results ) return  \GuzzleHttp\json_decode($results);
         return false;
     }
 
-    /*
-     * Local Entity
-     *
-    */
+    /* Local Entities Methods*/
 
     // Create Local Reference
     public function createReference($id, $name){
@@ -128,8 +120,9 @@ trait Referable
         ]);
     }
 
-    // Check if local reference already exist
+    /* Helper methods*/
 
+    // Check if local reference already exist
     public function checkIfLocalExist(){
         return count($this->references);
     }

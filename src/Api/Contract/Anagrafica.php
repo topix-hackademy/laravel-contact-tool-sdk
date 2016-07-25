@@ -4,7 +4,7 @@ namespace Topix\Hackademy\ContactToolSdk\Api\Contract;
 use Topix\Hackademy\ContactToolSdk\Api\Client;
 use Topix\Hackademy\ContactToolSdk\Api\ContactClient;
 
-abstract class Anagrafica
+abstract class Anagrafica implements iAnagrafica
 {
     protected $api;
     protected $entity;

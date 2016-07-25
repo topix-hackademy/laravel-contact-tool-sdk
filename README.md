@@ -8,7 +8,6 @@ Laravel Set of Models to perform access to Contact and Company data models.
 
 ```
    "require": {
-       "laravel/framework": "5.2.*",
        ...
        "topix-hackademy/laravel-contact-tool-sdk": ">=0.0.1"
    },
@@ -20,7 +19,6 @@ Launch a ` composer update `
 
 ```
    'providers' => [
-           Illuminate\Auth\AuthServiceProvider::class,
            ...
            Topix\Hackademy\ContactToolSdk\ServiceProvider::class,
 ```
@@ -49,6 +47,18 @@ Available classes are : Company, Contact, CompanyType, ContactType
 | create | data       | Crate an entity |
 | update | id, data   | Update the entity with the provided ID |
 | delete | id         | Delte the entity with the provided ID |
+
+#### Trait
+
+You can use the 'Refereable' Trait (Topix\Hackademy\ContactToolSdk\Contact\Traits)
+in every Class that extends Illuminate\Database\Eloquent\Model
+
+| Method          | Parameters       | Usage                                      |
+| --------------- | ---------------- | ------------------------------------------ |
+| getContact      | \*               | Get Contact data related to this model |
+| createContact   | type, data       | Create Remote Contact Related data and local Relations |
+| updateContact   | data             | Update Remote Contact Related data and local Relations |
+
 
 
 ## License
