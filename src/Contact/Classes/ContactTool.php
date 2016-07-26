@@ -18,7 +18,7 @@ class ContactTool {
     *   Return:  Collection of Remote Contact data
     *   Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
     */
-    public function getContact($referable){
+    public function getContact(iReferable $referable){
 
         if( $referable->checkIfLocalExist() ){
 
@@ -40,19 +40,29 @@ class ContactTool {
        * Return:  Collection of Remote Contact data
        * Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
        */
-    public function createContact(iReferable $referable, $ContactType, Array $data){
+    private function createReference(iReferable $referable, $ContactType, Array $data){
 
         // If a local ref exist update the reference
         if( $referable->checkIfLocalExist() )
             return $this->updateContact($referable, $data);
 
         // If there isn't a local reference create one
-        $results = $this->createExternalContact($ContactType, $data);
+        $results = $this->createExternalReference($ContactType, $data);
 
         // Check if results returns an error
         if( ! $results instanceof Response ) $referable->createReference($results['id'], $this->APIentities[$ContactType]);
         return $results;
 
+    }
+    
+    public function createContact(iReferable $referable, $data)
+    {
+        return $this->createReference($referable, 'contact', $data);
+    }
+
+    public function createCompany(iReferable $referable, $data)
+    {
+        return $this->createReference($referable, 'company', $data);
     }
 
     /*
@@ -63,11 +73,11 @@ class ContactTool {
     public function updateContact(iReferable $referable, $data){
 
         // Get Local Polimorph related data
-        $contactType = $this->references->external_entity_name;
-        $contactId = $this->references->external_id;
+        $contactType = $referable->getLocalReference()->external_entity_name;
+        $contactId = $referable->getLocalReference()->external_id;
 
         // Update Remote Entity trough API
-        $results = $this->updateExternalContact($data);
+        $results = $this->updateExternalContact($referable, $data);
 
         return $results;
 

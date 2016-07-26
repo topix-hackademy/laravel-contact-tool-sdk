@@ -38,8 +38,9 @@ To have access you need to set in /config/anagrafica.php:
 
 #### Classes
 
-Available classes are : Company, Contact, CompanyType, ContactType
+##### API Classes
 
+API Available classes are : Company, Contact, CompanyType, ContactType
 
 | Method | Parameters | Usage |
 | ------ | ---------- | ----- |
@@ -49,17 +50,34 @@ Available classes are : Company, Contact, CompanyType, ContactType
 | update | id, data   | Update the entity with the provided ID |
 | delete | id         | Delte the entity with the provided ID |
 
-#### Trait
+##### Contact Tool Class
 
-You can use the 'Refereable' Trait (Topix\Hackademy\ContactToolSdk\Contact\Traits)
-in every Class that extends Illuminate\Database\Eloquent\Model
+Contact tool class work in conjutin with a Laravel Model to manage local and remote data,
+To use a laravel model with 'Contac Tool':
+
+* Model must implement 'iReferable' interface (Topix\Hackademy\ContactToolSdk\Contact\Contracts\iReferable)
+* Model must use 'Referable' Trait (Topix\Hackademy\ContactToolSdk\Contact\Traits)
 
 | Method          | Parameters       | Usage                                      |
 | --------------- | ---------------- | ------------------------------------------ |
-| getContact      | \*               | Get Contact data related to this model |
-| createContact   | type, data       | Create Remote Contact Related data and local Relations |
-| updateContact   | data             | Update Remote Contact Related data and local Relations |
+| getContact      | iREferable               | Get Contact data related to this model |
+| getCompany      | iREferable               | Get Company data related to this model |
+| createContact   | iREferable, type, data   | Create Remote Contact Related data and local Relations |
+| updateContact   | iREferable, data         | Update Remote Contact Related data and local Relations |
 
+##### Facade
+
+If you want to use the ContactTool Facade you need to include an alias in /config/app.php
+
+```
+    'aliases' => [
+		'ContactTool' => \Topix\Hackademy\ContactToolSdk\Contact\Facades\ContactTool::class,
+```
+
+#### Trait
+
+You can use the 'Refereable' Trait (Topix\Hackademy\ContactToolSdk\Contact\Traits) in every class
+tha extends Topix\Hackademy\ContactToolSdk\Contact\Contracts\iReferable
 
 
 ## License

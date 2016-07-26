@@ -9,13 +9,6 @@ abstract class Anagrafica implements iAnagrafica
     protected $api;
     protected $entity;
     
-    public function __construct()
-    {
-
-//        $this->api->apiBaseUri = config('anagrafica.api-base-uri');
-//        $this->api->authToken = config('anagrafica.auth-token');
-    }
-
     public function all(){
         return ContactClient::get($this->entity.'/');
     }

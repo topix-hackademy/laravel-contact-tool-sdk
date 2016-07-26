@@ -11,7 +11,5 @@ class Contact extends Model
         'referable_id',
         'referable_type'
     ];
-    
-    
 
 }

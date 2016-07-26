@@ -1,11 +1,11 @@
 <?php
+
 namespace Topix\Hackademy\ContactToolSdk\Contact\Traits;
 
 use GuzzleHttp\Psr7\Response;
 
 trait Referable
 {
-
 
     public function references()
     {
