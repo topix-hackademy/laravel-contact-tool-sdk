@@ -40,7 +40,7 @@ class ContactClient
         try {
             $response = $client->request($method, config('anagrafica.api-base-uri').$uri, $options);
         } catch (ClientException $e) {
-            return false;
+            return $e->getResponse();
         }
 
         return $response->getBody()->getContents();
