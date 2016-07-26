@@ -12,7 +12,6 @@ trait Referable
         return $this->morphOne('Topix\Hackademy\ContactToolSdk\Contact\Models\Contact', 'referable');
     }
 
-
     /* Local Entities Methods*/
 
     // Create Local Reference

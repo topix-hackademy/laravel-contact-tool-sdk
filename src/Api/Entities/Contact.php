@@ -8,7 +8,7 @@ class Contact extends Anagrafica
 {
     protected $entity = 'contact';
 
-    public function findByMail($email){
+    public function getByEmail($email){
         return ContactClient::get('/contact-by-email/'.$email);
     }
 

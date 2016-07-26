@@ -4,13 +4,23 @@ Laravel Set of Models to perform access to Contact and Company data models.
 
 ## Install
 
-#### Add Packge dependency to project composer.json
+#### Add Packge dependency and repository to project composer.json
 
 ```
    "require": {
        ...
        "topix-hackademy/laravel-contact-tool-sdk": ">=0.0.1"
    },
+
+   ...
+
+   "repositories": [
+       {
+           "type": "git",
+           "url": "https://github.com/topix-hackademy/laravel-contact-tool-sdk.git"
+       }
+   ]
+
 ```
 
 Launch a ` composer update `
@@ -60,10 +70,10 @@ To use a laravel model with 'Contac Tool':
 
 | Method          | Parameters       | Usage                                      |
 | --------------- | ---------------- | ------------------------------------------ |
-| getContact      | iREferable               | Get Contact data related to this model |
-| getCompany      | iREferable               | Get Company data related to this model |
-| createContact   | iREferable, type, data   | Create Remote Contact Related data and local Relations |
-| updateContact   | iREferable, data         | Update Remote Contact Related data and local Relations |
+| getContact      | iReferable               | Get Contact data related to this model |
+| getCompany      | iReferable               | Get Company data related to this model |
+| createContact   | iReferable, type, data   | Create Remote Contact Related data and local Relations |
+| updateContact   | iReferable, data         | Update Remote Contact Related data and local Relations |
 
 ##### Facade
 

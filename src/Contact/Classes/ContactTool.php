@@ -34,6 +34,17 @@ class ContactTool {
         return false;
 
     }
+
+    public function getContactByEmail($email){
+
+        $contactType = $this->APIentities['contact'];
+        $APIentity = new $contactType();
+        $results = $APIentity->getByEmail($email);
+
+        if( ! $results instanceof Response )return $this->jsonToCollection($results);
+        return $results;
+
+    }
     
     /*
        * Usage:   Create Local An remote Contact
