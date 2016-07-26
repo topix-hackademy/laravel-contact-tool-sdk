@@ -63,6 +63,7 @@ API Available classes are : Company, Contact, CompanyType, ContactType
 ##### Contact Tool Class
 
 Contact tool class work in conjutin with a Laravel Model to manage local and remote data,
+
 To use a laravel model with 'Contac Tool':
 
 * Model must implement 'iReferable' interface (Topix\Hackademy\ContactToolSdk\Contact\Contracts\iReferable)
@@ -70,10 +71,10 @@ To use a laravel model with 'Contac Tool':
 
 | Method          | Parameters       | Usage                                      |
 | --------------- | ---------------- | ------------------------------------------ |
-| getContact      | iReferable               | Get Contact data related to this model |
-| getCompany      | iReferable               | Get Company data related to this model |
-| createContact   | iReferable, type, data   | Create Remote Contact Related data and local Relations |
-| updateContact   | iReferable, data         | Update Remote Contact Related data and local Relations |
+| getReference    | iReferable       | Get Reference data related to this model |
+| createContact   | iReferable, data | Create Remote Contact Related data and local Relations |
+| createCompany   | iReferable, data | Create Remote Company Related data and local Relations |
+| updateReference | iReferable, data | Update Remote Reference Related data and local Relations |
 
 ##### Facade
 

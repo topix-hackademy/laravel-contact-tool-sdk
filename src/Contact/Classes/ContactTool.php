@@ -18,7 +18,7 @@ class ContactTool {
     *   Return:  Collection of Remote Contact data
     *   Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
     */
-    public function getContact(iReferable $referable){
+    public function getReference(iReferable $referable){
 
         if( $referable->checkIfLocalExist() ){
 
@@ -81,7 +81,7 @@ class ContactTool {
      * Return:  Collection with updated data
      * Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
      */
-    public function updateContact(iReferable $referable, $data){
+    public function updateReference(iReferable $referable, $data){
 
         // Get Local Polimorph related data
         $contactType = $referable->getLocalReference()->external_entity_name;
