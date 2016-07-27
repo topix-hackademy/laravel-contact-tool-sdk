@@ -68,6 +68,7 @@ To use a laravel model with 'Contac Tool':
 ##### API Classes
 
 Set of object that reflects entities on remote API
+
 API Available classes are : Company, Contact, CompanyType, ContactType
 
 | Method | Parameters | Usage |
