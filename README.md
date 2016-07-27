@@ -1,15 +1,15 @@
 # laravel-contact-tool-sdk
 
-Laravel Set of Models to perform access to Contact and Company data models.
+Laravel Set of Classes to perform access to Contact and Company data models and maintain local references.
 
 ## Install
 
-#### Add Packge dependency and repository to project composer.json
+#### Add Packge dependencies to project composer.json:
 
 ```
    "require": {
        ...
-       "topix-hackademy/laravel-contact-tool-sdk": ">=0.0.1"
+       "topix-hackademy/laravel-contact-tool-sdk": "^0.0.1"
    },
 
    ...
@@ -33,41 +33,29 @@ Launch a ` composer update `
            Topix\Hackademy\ContactToolSdk\ServiceProvider::class,
 ```
 
-Update the autoloader with: ` composer dump-autoload`
-
 Publish package files with: ` php artisan vendor:publish `
+
+Update the autoloader with: ` composer dump-autoload`
 
 ## Usage
 
 #### Setup
 
-To have access you need to set in /config/anagrafica.php:
+To have access to remote API you need to set in /config/anagrafica.php:
 
 * Api Base Url: (EG: http://example.com/api/v1/)
 * Service Token: (EG: YOUR-SERVICE-TOKEN)
 
 #### Classes
 
-##### API Classes
-
-API Available classes are : Company, Contact, CompanyType, ContactType
-
-| Method | Parameters | Usage |
-| ------ | ---------- | ----- |
-| all    | \*  | Get all the entities |
-| get    | id         | Get an entity with the provoded ID |
-| create | data       | Crate an entity |
-| update | id, data   | Update the entity with the provided ID |
-| delete | id         | Delte the entity with the provided ID |
-
 ##### Contact Tool Class
 
-Contact tool class work in conjutin with a Laravel Model to manage local and remote data,
+Contact tool class work in conjunctin with a Laravel Model that implements iReferable interface to manage local and remote data,
 
 To use a laravel model with 'Contac Tool':
 
 * Model must implement 'iReferable' interface (Topix\Hackademy\ContactToolSdk\Contact\Contracts\iReferable)
-* Model must use 'Referable' Trait (Topix\Hackademy\ContactToolSdk\Contact\Traits)
+* Model can use standard implementation of 'iReferable interface' with 'Referable' Trait (Topix\Hackademy\ContactToolSdk\Contact\Traits)
 
 | Method          | Parameters       | Usage                                      |
 | --------------- | ---------------- | ------------------------------------------ |
@@ -76,9 +64,24 @@ To use a laravel model with 'Contac Tool':
 | createCompany   | iReferable, data | Create Remote Company Related data and local Relations |
 | updateReference | iReferable, data | Update Remote Reference Related data and local Relations |
 
+
+##### API Classes
+
+Set of object that reflects entities on remote API
+API Available classes are : Company, Contact, CompanyType, ContactType
+
+| Method | Parameters | Usage |
+| ------ | ---------- | ----- |
+| all    | \*         | Get all the entities |
+| get    | id         | Get an entity with the provoded ID |
+| create | data       | Crate an entity |
+| update | id, data   | Update the entity with the provided ID |
+| delete | id         | Delte the entity with the provided ID |
+
+
 ##### Facade
 
-If you want to use the ContactTool Facade you need to include an alias in /config/app.php
+If you want to use the ContactTool Facade Alias you need to include an alias in /config/app.php
 
 ```
     'aliases' => [
