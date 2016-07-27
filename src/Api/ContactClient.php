@@ -1,5 +1,6 @@
 <?php
 namespace Topix\Hackademy\ContactToolSdk\Api;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
 class ContactClient
@@ -25,7 +26,7 @@ class ContactClient
 
     public static function call($uri, $method = 'GET', $data = []){
 
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
 
         $options = [ 'headers' =>
             [
