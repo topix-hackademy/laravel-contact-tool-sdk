@@ -3,6 +3,10 @@
 namespace Topix\Hackademy\ContactToolSdk;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Topix\Hackademy\ContactToolSdk\Api\Entities\Company;
+use Topix\Hackademy\ContactToolSdk\Api\Entities\CompanyType;
+use Topix\Hackademy\ContactToolSdk\Api\Entities\Contact;
+use Topix\Hackademy\ContactToolSdk\Api\Entities\ContactType;
 use Topix\Hackademy\ContactToolSdk\Contact\Classes\ContactTool;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -36,9 +40,19 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $configPath = __DIR__ . '/../config/anagrafica.php';
         $this->mergeConfigFrom($configPath, 'anagrafica');
 
-        $this->app->bind('contactTool', function () {
-            return new ContactTool;
+        $this->app->bind('contact', function () {
+            return new Contact;
         });
+        $this->app->bind('contactType', function () {
+            return new ContactType;
+        });
+        $this->app->bind('company', function () {
+            return new Company;
+        });
+        $this->app->bind('companyType', function () {
+            return new CompanyType;
+        });
+
 
     }
 
