@@ -40,6 +40,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $configPath = __DIR__ . '/../config/anagrafica.php';
         $this->mergeConfigFrom($configPath, 'anagrafica');
 
+        $this->app->bind('contactTool', function () {
+            return new ContactTool;
+        });
         $this->app->bind('contact', function () {
             return new Contact;
         });

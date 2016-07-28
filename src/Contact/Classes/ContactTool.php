@@ -3,14 +3,16 @@
 namespace Topix\Hackademy\ContactToolSdk\Contact\Classes;
 
 use GuzzleHttp\Psr7\Response;
+use Topix\Hackademy\ContactToolSdk\Api\Entities\Company;
+use Topix\Hackademy\ContactToolSdk\Api\Entities\Contact;
 use Topix\Hackademy\ContactToolSdk\Contact\Contracts\iReferable;
 
 
 class ContactTool {
 
     public $APIentities = [
-        'contact' => "Topix\\Hackademy\\ContactToolSdk\\Api\\Entities\\Contact",
-        'company' => "Topix\\Hackademy\\ContactToolSdk\\Api\\Entities\\Company",
+        'contact' => Contact::class,
+        'company' => Company::class
     ];
 
     /*
@@ -19,7 +21,7 @@ class ContactTool {
     *   Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
     */
     public function getReference(iReferable $referable){
-
+        
         if( $referable->checkIfLocalExist() ){
 
             $contactType = $referable->getLocalReference()->external_entity_name;
@@ -35,7 +37,7 @@ class ContactTool {
 
     }
 
-    public function getContactByEmail($email){
+    public function getReferenceByEmail($email){
 
         $contactType = $this->APIentities['contact'];
         $APIentity = new $contactType();
@@ -57,11 +59,11 @@ class ContactTool {
         if( $referable->checkIfLocalExist() )
             return $this->updateContact($referable, $data);
 
-        // If there isn't a local reference create one
-        $results = $this->createExternalReference($ContactType, $data);
+        // If there isn't a local reference create External reference
+        $results = $this->createExternalContact($ContactType, $data);
 
         // Check if results returns an error
-        if( ! $results instanceof Response ) $referable->createReference($results['id'], $this->APIentities[$ContactType]);
+        if( ! $results instanceof Response ) $referable->createLocalReference($results['id'], $this->APIentities[$ContactType]);
         return $results;
 
     }

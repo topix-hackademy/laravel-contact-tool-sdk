@@ -48,49 +48,4 @@ class ContactClient
 
     }
 
-
-//    public static function call($uri, $method = 'GET', $data = []){
-//
-//        $data = json_encode($data);
-//
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, config('anagrafica.api-base-uri').$uri );
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-//            'AUTH-TOKEN: '.config('anagrafica.auth-token'),
-//            'CONTENT-TYPE: application/json'
-////            'CONTENT-LENGTH: '.strlen($data)
-//        ));
-//        curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.52 Safari/537.17');
-//        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-//
-//        // DEBUG
-////        curl_setopt($ch, CURLOPT_HEADER, 1);
-////        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-////        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
-//        // END DEBUG
-//
-//        if($method == 'POST'|| $method == 'post' || $method == 'Post'){
-//            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-//            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-//
-//        }
-//        if($method == 'PUT'|| $method == 'put' || $method == 'Put'){
-//            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-//            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-//        }
-//        if($method == 'DELETE'|| $method == 'delete' || $method == 'Delete'){
-//            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-//            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-//
-//        }
-//
-//        $response = curl_exec($ch);
-//        curl_close ($ch);
-//
-//        return $response;
-//
-//    }
-
 }
