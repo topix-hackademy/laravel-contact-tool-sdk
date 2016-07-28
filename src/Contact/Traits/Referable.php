@@ -2,14 +2,15 @@
 
 namespace Topix\Hackademy\ContactToolSdk\Contact\Traits;
 
-use GuzzleHttp\Psr7\Response;
+use Topix\Hackademy\ContactToolSdk\Contact\Models\Contact;
 
 trait Referable
 {
 
     public function references()
     {
-        return $this->morphOne('Topix\Hackademy\ContactToolSdk\Contact\Models\Contact', 'referable');
+        return $this->morphOne(Contact::class, 'referable');
+
     }
 
     /* Local Entities Methods*/
