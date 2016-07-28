@@ -61,40 +61,22 @@ class ContactTool {
 
     }
 
-    public function getAllContacts (){
+    public function getAllReference(iReferable $referable){
+
+        $contactType = $referable->getLocalReference()->external_entity_name;
 
         $locals = LocalContact::all();
         $results = new Collection();
 
         foreach($locals as $local){
 
-            $contact = new Contact();
+            $reference = new $contactType();
             $id = $local->external_id;
 
-            $response = $contact->get($id);
+            $response = $reference->get($id);
 
             if( ! $response instanceof Response)
-                $response[] = json_decode($response);
-
-        }
-        return $results;
-
-    }
-
-    public function getAllCompanies (){
-
-        $locals = LocalContact::all();
-        $results = new Collection();
-
-        foreach($locals as $local){
-
-            $company = new Company();
-            $id = $local->external_id;
-
-            $response = $company->get($id);
-
-            if( ! $response instanceof Response)
-                $results[] = json_decode($company->get($id));
+                $results[] = json_decode($response);
 
         }
         return $results;
@@ -110,8 +92,8 @@ class ContactTool {
 
         // If a local ref exist update the reference
         if( $referable->checkIfLocalExist() )
-            return $this->updateContact($referable, $data);
-
+                return $this->updateReference($referable, $data);
+     
         // If there isn't a local reference create External reference
         $results = $this->createExternalContact($ContactType, $data);
 

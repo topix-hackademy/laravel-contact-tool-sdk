@@ -40,15 +40,17 @@ trait Referable
     public function getLocalReference(){
         return $this->references;
     }
-
     // Check if local reference already exist
     public function checkIfLocalExist(){
         return count($this->references);
     }
-    
     public function getReference()
     {
         return app('contactTool')->getReference($this);
+    }
+    public function getAllReference()
+    {
+        return app('contactTool')->getAllReference($this);
     }
     public function updateReference($data)
     {
@@ -62,8 +64,11 @@ trait Referable
     {
         return app('contactTool')->createContact($this, $data);
     }
-    public function getReferenceByEmail($email){
-        return app('contactTool')->getReferenceByEmail($email);
+    public function getContactByEmail($email){
+        return app('contactTool')->getContactByEmail($email);
+    }
+    public function getCompanyByCode($code){
+        return app('contactTool')->getCompanyByCode($code);
     }
 
 }
