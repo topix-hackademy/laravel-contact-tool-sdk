@@ -9,7 +9,7 @@ class Company extends Anagrafica
     protected $entity = 'company';
 
     public function getByCode($code){
-        return ContactClient::get('/contact-by-code/'.$code);
+        return ContactClient::get('/company-by-code/'.$code);
     }
 
 

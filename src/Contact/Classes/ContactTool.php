@@ -3,6 +3,7 @@
 namespace Topix\Hackademy\ContactToolSdk\Contact\Classes;
 
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Database\Eloquent\Collection;
 use Topix\Hackademy\ContactToolSdk\Api\Entities\Company;
 use Topix\Hackademy\ContactToolSdk\Api\Entities\Contact;
 use Topix\Hackademy\ContactToolSdk\Contact\Contracts\iReferable;
