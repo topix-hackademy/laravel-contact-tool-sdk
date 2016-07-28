@@ -7,7 +7,6 @@ use Topix\Hackademy\ContactToolSdk\Contact\Models\Contact;
 
 trait Referable
 {
-
     public function references()
     {
         return $this->morphOne(Contact::class, 'referable');

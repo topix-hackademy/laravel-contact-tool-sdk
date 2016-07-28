@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Response;
 use Topix\Hackademy\ContactToolSdk\Api\Entities\Company;
 use Topix\Hackademy\ContactToolSdk\Api\Entities\Contact;
 use Topix\Hackademy\ContactToolSdk\Contact\Contracts\iReferable;
+use Topix\Hackademy\ContactToolSdk\Contact\Models\Contact as LocalContact;
 
 
 class ContactTool {
@@ -37,13 +38,64 @@ class ContactTool {
 
     }
 
-    public function getReferenceByEmail($email){
+    public function getContactEmail($email){
 
         $contactType = $this->APIentities['contact'];
         $APIentity = new $contactType();
         $results = $APIentity->getByEmail($email);
 
         if( ! $results instanceof Response )return $this->jsonToCollection($results);
+        return $results;
+
+    }
+
+    public function getCompanyByCode($code){
+
+        $contactType = $this->APIentities['company'];
+        $APIentity = new $contactType();
+        $results = $APIentity->getByCode($code);
+
+        if( ! $results instanceof Response )return $this->jsonToCollection($results);
+        return $results;
+
+    }
+
+    public function getAllContacts (){
+
+        $locals = LocalContact::all();
+        $results = new Collection();
+
+        foreach($locals as $local){
+
+            $contact = new Contact();
+            $id = $local->external_id;
+
+            $response = $contact->get($id);
+
+            if( ! $response instanceof Response)
+                $response[] = json_decode($response);
+
+        }
+        return $results;
+
+    }
+
+    public function getAllCompanies (){
+
+        $locals = LocalContact::all();
+        $results = new Collection();
+
+        foreach($locals as $local){
+
+            $company = new Company();
+            $id = $local->external_id;
+
+            $response = $company->get($id);
+
+            if( ! $response instanceof Response)
+                $results[] = json_decode($company->get($id));
+
+        }
         return $results;
 
     }
@@ -134,8 +186,7 @@ class ContactTool {
         if( ! $results instanceof Response ) return  $this->jsonToCollection($results);
         return $results;
     }
-
-
+    
     /* Helper methods*/
 
     // Convert json to collection

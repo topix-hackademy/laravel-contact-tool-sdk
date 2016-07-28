@@ -2,6 +2,7 @@
 namespace Topix\Hackademy\ContactToolSdk\Api;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use Topix\Hackademy\ContactToolSdk\Contact\Models\Contact as LocalContact;
 
 class ContactClient
 {
