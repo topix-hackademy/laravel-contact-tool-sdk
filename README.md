@@ -82,11 +82,15 @@ API Available classes are : Company, Contact, CompanyType, ContactType
 
 ##### Facade
 
-If you want to use the ContactTool Facade Alias you need to include an alias in /config/app.php
+If you want to use the ContactTool Facade Aliases you need to include an alias in /config/app.php
 
 ```
     'aliases' => [
 		'ContactTool' => \Topix\Hackademy\ContactToolSdk\Contact\Facades\ContactTool::class,
+		'Contact' => \Topix\Hackademy\ContactToolSdk\Contact\Facades\Contact::class,
+        'ContactType' => \Topix\Hackademy\ContactToolSdk\Contact\Facades\ContactType::class,
+        'Company' => \Topix\Hackademy\ContactToolSdk\Contact\Facades\Company::class,
+        'CompanyType' => \Topix\Hackademy\ContactToolSdk\Contact\Facades\CompanyType::class,
 ```
 
 #### Trait

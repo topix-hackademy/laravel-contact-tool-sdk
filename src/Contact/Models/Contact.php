@@ -12,4 +12,8 @@ class Contact extends Model
         'referable_type'
     ];
 
+    public function referable (){
+        return $this->morphTo();
+    }
+
 }
