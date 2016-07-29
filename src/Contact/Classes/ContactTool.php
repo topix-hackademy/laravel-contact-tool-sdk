@@ -63,6 +63,7 @@ class ContactTool {
 
     public function getAllReference(iReferable $referable, $contactType){
 
+        $contactType = $this->APIentities[$contactType];
         $locals = LocalContact::all();
         $results = new Collection();
 
