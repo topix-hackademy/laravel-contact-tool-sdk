@@ -61,9 +61,7 @@ class ContactTool {
 
     }
 
-    public function getAllReference(iReferable $referable){
-
-        $contactType = $referable->getLocalReference()->external_entity_name;
+    public function getAllReference(iReferable $referable, $contactType){
 
         $locals = LocalContact::all();
         $results = new Collection();
@@ -90,16 +88,26 @@ class ContactTool {
        */
     private function createReference(iReferable $referable, $ContactType, Array $data){
 
-        // If a local ref exist update the reference
-        if( $referable->checkIfLocalExist() )
-                return $this->updateReference($referable, $data);
-     
-        // If there isn't a local reference create External reference
-        $results = $this->createExternalContact($ContactType, $data);
+        // get external data if exists
+        $external = $this->getReference($referable) ;
 
-        // Check if results returns an error
-        if( ! $results instanceof Response ) $referable->createLocalReference($results['id'], $this->APIentities[$ContactType]);
-        return $results;
+        // If a local and remote ref exist update the remote
+        if( $referable->checkIfLocalExist() && ! $external instanceof Response )
+            return $this->updateReference($referable, $data);
+
+        // If local and remote doesnt exist create both
+        if( ! $referable->checkIfLocalExist()) {
+            $results = $this->createExternalContact($ContactType, $data);
+
+            // Check if results returns an error
+            if (!$results instanceof Response) $referable->createLocalReference($results['id'], $this->APIentities[$ContactType]);
+            return $results;
+        }
+        // If only remote exist create local
+        else {
+            if (!$external instanceof Response) $referable->createLocalReference($external['id'], $this->APIentities[$ContactType]);
+            return $external;
+        }
 
     }
     

@@ -48,9 +48,9 @@ trait Referable
     {
         return app('contactTool')->getReference($this);
     }
-    public function getAllReference()
+    public function getAllReference($referenceName)
     {
-        return app('contactTool')->getAllReference($this);
+        return app('contactTool')->getAllReference($this, $referenceName);
     }
     public function updateReference($data)
     {
