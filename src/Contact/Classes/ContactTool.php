@@ -87,9 +87,9 @@ class ContactTool {
        * Return:  Collection of Remote Contact data
        * Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
        */
-    private function createReference(iReferable $referable, $ContactType, Array $data){
+    private function createReference(iReferable $referable, $contactType, Array $data){
 
-        $remoteExist = $this->findRemote($ContactType, $data);
+        $remoteExist = $this->findRemote($contactType, $data);
         $localExist = $referable->checkIfLocalExist();
 
         // If API responds with error - return error
@@ -102,21 +102,21 @@ class ContactTool {
 
         // If 'ONLY LOCAL' exist
         if ( $localExist  &&  ! $remoteExist )
-            return $this->createExternalContact($ContactType, $data);
+            return $this->createExternalContact($contactType, $data);
 
         // If 'BOTH DOESNT EXIST' - create both
         if( ! $localExist  &&  ! $remoteExist) {
-            $results = $this->createExternalContact($ContactType, $data);
+            $results = $this->createExternalContact($contactType, $data);
 
             // Check if results returns an error
-            if (!$results instanceof Response) $referable->createLocalReference($results['id'], $this->APIentities[$ContactType]);
+            if (!$results instanceof Response) $referable->createLocalReference($results['id'], $this->APIentities[$contactType]);
             return $results;
 
         }
 
         // If 'ONLY REMOTE' exist - create local
         if ( ! $localExist  &&  $remoteExist ) {
-            $referable->createLocalReference($remoteExist['id'], $this->APIentities[$ContactType]);
+            $referable->createLocalReference($remoteExist['id'], $this->APIentities[$contactType]);
             return $remoteExist;
         }
 
@@ -126,7 +126,7 @@ class ContactTool {
 
     public function findRemote($contactType, Array $data){
 
-        $APIentity = new $this->APIentities[$ContactType];
+        $APIentity = new $this->APIentities[$contactType];
         $idExist = isset($data['id']);
         $remote = $idExist? $APIentity->get($data['id']) : false;
 
