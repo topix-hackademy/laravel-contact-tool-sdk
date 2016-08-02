@@ -23,7 +23,7 @@ class ContactTool {
     *   Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
     */
     public function getReference(iReferable $referable){
-        
+
         if( $referable->checkIfLocalExist() ){
 
             $contactType = $referable->getLocalReference()->external_entity_name;
@@ -39,7 +39,7 @@ class ContactTool {
 
     }
 
-    public function getContactEmail($email){
+    public function getContactByEmail($email){
 
         $contactType = $this->APIentities['contact'];
         $APIentity = new $contactType();
@@ -81,7 +81,7 @@ class ContactTool {
         return $results;
 
     }
-    
+
     /*
        * Usage:   Create Local An remote Contact
        * Return:  Collection of Remote Contact data
@@ -89,29 +89,62 @@ class ContactTool {
        */
     private function createReference(iReferable $referable, $ContactType, Array $data){
 
-        // get external data if exists
-        $external = $this->getReference($referable) ;
+        $remoteExist = $this->findRemote($ContactType, $data);
+        $localExist = $referable->checkIfLocalExist();
 
-        // If a local and remote ref exist update the remote
-        if( $referable->checkIfLocalExist() && ! $external instanceof Response )
+        // If API responds with error - return error
+        if( $remoteExist instanceof Response )
+            return $remoteExist;
+
+        // If a 'LOCAL AND REMOTE' ref exist - update the remote
+        if( $localExist  &&  $remoteExist )
             return $this->updateReference($referable, $data);
 
-        // If local and remote doesnt exist create both
-        if( ! $referable->checkIfLocalExist()) {
+        // If 'ONLY LOCAL' exist
+        if ( $localExist  &&  ! $remoteExist )
+            return $this->createExternalContact($ContactType, $data);
+
+        // If 'BOTH DOESNT EXIST' - create both
+        if( ! $localExist  &&  ! $remoteExist) {
             $results = $this->createExternalContact($ContactType, $data);
 
             // Check if results returns an error
             if (!$results instanceof Response) $referable->createLocalReference($results['id'], $this->APIentities[$ContactType]);
             return $results;
-        }
-        // If only remote exist create local
-        else {
-            if (!$external instanceof Response) $referable->createLocalReference($external['id'], $this->APIentities[$ContactType]);
-            return $external;
+
         }
 
+        // If 'ONLY REMOTE' exist - create local
+        if ( ! $localExist  &&  $remoteExist ) {
+            $referable->createLocalReference($remoteExist['id'], $this->APIentities[$ContactType]);
+            return $remoteExist;
+        }
+
+        return $remoteExist;
+
     }
-    
+
+    public function findRemote($contactType, Array $data){
+
+        $APIentity = new $this->APIentities[$ContactType];
+        $idExist = isset($data['id']);
+        $remote = $idExist? $APIentity->get($data['id']) : false;
+
+        // If data contains an id - assume it exist on remote
+        if( $remote )
+            return $remote;
+
+        // If data doesn't contains an id - search remote by field
+        if($contactType == 'company')
+            return $this->getCompanyByCode($data['company_tax_code']);
+
+        if($contactType == 'contact')
+            return $this->getContactByEmail($data['contact_email']);
+
+        return false;
+
+    }
+
     public function createContact(iReferable $referable, $data)
     {
         return $this->createReference($referable, 'contact', $data);
@@ -178,7 +211,7 @@ class ContactTool {
         if( ! $results instanceof Response ) return  $this->jsonToCollection($results);
         return $results;
     }
-    
+
     /* Helper methods*/
 
     // Convert json to collection
