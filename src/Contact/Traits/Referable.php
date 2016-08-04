@@ -50,7 +50,7 @@ trait Referable
     }
     public function getAllReference($referenceName)
     {
-        return app('contactTool')->getAllReference($this, $referenceName);
+        return app('contactTool')->getAllReference($referenceName);
     }
     public function updateReference($data)
     {

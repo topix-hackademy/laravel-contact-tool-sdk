@@ -61,18 +61,20 @@ class ContactTool {
 
     }
 
-    public function getAllReference(iReferable $referable, $contactType){
+    public function getAllReference($contactType){
 
         $contactType = $this->APIentities[$contactType];
-        $locals = LocalContact::all();
+        $APIentityInstance = new $contactType();
+
+        $localReferenceFiltered = LocalContact::where('external_entity_name', $contactType)->get();
+
         $results = new Collection();
 
-        foreach($locals as $local){
+        foreach($localReferenceFiltered as $local){
 
-            $reference = new $contactType();
             $id = $local->external_id;
 
-            $response = $reference->get($id);
+            $response = $APIentityInstance->get($id);
 
             if( ! $response instanceof Response)
                 $results[] = json_decode($response);
