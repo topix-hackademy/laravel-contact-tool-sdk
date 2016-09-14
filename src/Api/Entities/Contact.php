@@ -6,10 +6,15 @@ use Topix\Hackademy\ContactToolSdk\Api\Contract\Anagrafica;
 
 class Contact extends Anagrafica
 {
-    protected $entity = 'contact';
+    protected static $entity = 'contact';
 
-    public function getByEmail($email){
+    public static function getByEmail($email){
         return ContactClient::get('/contact-by-email/'.$email);
     }
 
+    public static function validate($data)
+    {
+        // TODO: Implement validate() method.ù
+        return true;
+    }
 }

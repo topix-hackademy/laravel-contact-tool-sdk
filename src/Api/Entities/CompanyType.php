@@ -5,5 +5,12 @@ use Topix\Hackademy\ContactToolSdk\Api\Contract\Anagrafica;
 
 class CompanyType extends Anagrafica
 {
-    protected $entity = 'company-type';
+    protected static $entity = 'company-type';
+
+    public static function validate($data)
+    {
+        // TODO: Implement validate() method.
+
+        return false;
+    }
 }

@@ -5,5 +5,12 @@ use Topix\Hackademy\ContactToolSdk\Api\Contract\Anagrafica;
 
 class ContactType extends Anagrafica
 {
-    protected $entity = 'role';
+    protected static $entity = 'role';
+
+    public static function validate($data)
+    {
+        // TODO: Implement validate() method.
+
+        return false;
+    }
 }

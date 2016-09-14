@@ -6,23 +6,28 @@ use Topix\Hackademy\ContactToolSdk\Api\ContactClient;
 
 abstract class Anagrafica implements iAnagrafica
 {
-    protected $api;
-    protected $entity;
+    protected static $api;
+    protected static $entity;
     
-    public function all(){
-        return ContactClient::get($this->entity.'/');
+    public static function all(){
+        return ContactClient::get(static::entity.'/');
     }
-    public function get($id){
-        return ContactClient::get($this->entity.'/'.$id.'/');
+    public static function get($id){
+        if(is_numeric($id)) return ContactClient::get(static::entity.'/'.$id.'/');
+        return false;
     }
-    public function create(Array $data){
-        return ContactClient::post($this->entity.'/', $data);
+    public static function create(Array $data){
+        if(static::validate($data)) return ContactClient::post(static::entity.'/', $data);
+        return false;
     }
-    public function update($id, Array $data){
-        return ContactClient::put($this->entity.'/'.$id.'/', $data);
+    public static function update($id, Array $data){
+        if(is_numeric($id) && static::validate($data)) return ContactClient::put(static::entity.'/'.$id.'/', $data);
+        return false;
     }
-    public function delete($id, Array $data){
-        return ContactClient::delete($this->entity.'/'.$id.'/', $data);
+    public static function delete($id, Array $data){
+        if(is_numeric($id) && static::validate($data)) return ContactClient::delete(static::entity.'/'.$id.'/', $data);
+        return false;
     }
 
+    public static abstract function validate($data);
 }

@@ -7,68 +7,21 @@ use Topix\Hackademy\ContactToolSdk\Contact\Models\Contact;
 
 trait Referable
 {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function references()
     {
         return $this->morphOne(Contact::class, 'referable');
 
     }
 
-    /* Local Entities Methods*/
-
-    // Create Local Reference
-    public function createLocalReference($id, $name){
-
-        return $this->references()->create( [
-            'external_id' => $id,
-            'external_entity_name' => $name
-        ]);
-
-    }
-
-    // Update Local Reference
-    public function updateLocalReference($id, $name){
-
-        return $this->references()->update([
-            'external_id' => $id,
-            'external_entity_name' => $name
-        ]);
-    }
-
-    /* Helper methods*/
-
-    // Reurn loacal Reference
-    public function getLocalReference(){
-        return $this->references;
-    }
-    // Check if local reference already exist
-    public function checkIfLocalExist(){
-        return count($this->references);
-    }
+    /**
+     * Estra le informazioni memorizzate sull'anagrafica rispetto questa entità
+     * @return mixed
+     */
     public function getReference()
     {
         return app('contactTool')->getReference($this);
     }
-    public function getAllReference($referenceName)
-    {
-        return app('contactTool')->getAllReference($referenceName);
-    }
-    public function updateReference($data)
-    {
-        return app('contactTool')->updateReference($this, $data);
-    }
-    public function createCompany($data)
-    {
-        return app('contactTool')->createCompany($this, $data);
-    }
-    public function createContact($data)
-    {
-        return app('contactTool')->createContact($this, $data);
-    }
-    public function getContactByEmail($email){
-        return app('contactTool')->getContactByEmail($email);
-    }
-    public function getCompanyByCode($code){
-        return app('contactTool')->getCompanyByCode($code);
-    }
-
 }

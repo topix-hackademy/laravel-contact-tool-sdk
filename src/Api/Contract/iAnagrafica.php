@@ -3,9 +3,9 @@ namespace Topix\Hackademy\ContactToolSdk\Api\Contract;
 
 interface iAnagrafica
 {
-    public function all();
-    public function get($id);
-    public function create(Array $data);
-    public function update($id, Array $data);
-    public function delete($id, Array $data);
+    public static function all();
+    public static function get($id);
+    public static function create(Array $data);
+    public static function update($id, Array $data);
+    public static function delete($id, Array $data);
 }

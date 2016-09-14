@@ -6,11 +6,16 @@ use Topix\Hackademy\ContactToolSdk\Api\Contract\Anagrafica;
 
 class Company extends Anagrafica
 {
-    protected $entity = 'company';
+    protected static $entity = 'company';
 
-    public function getByCode($code){
+    public static function getByCode($code){
         return ContactClient::get('/company-by-code/'.$code);
     }
 
 
+    public static function validate($data)
+    {
+        // TODO: Implement validate() method.
+        return true;
+    }
 }
