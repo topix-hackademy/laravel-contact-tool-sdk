@@ -7,16 +7,37 @@ use Topix\Hackademy\ContactToolSdk\Contact\Models\Contact as LocalContact;
 class ContactClient
 {
 
+    /**
+     * @param $uri
+     * @return null|\Psr\Http\Message\ResponseInterface|string
+     */
     public static function get($uri){
         return self::call($uri);
     }
+
+    /**
+     * @param $uri
+     * @param array $data
+     * @return null|\Psr\Http\Message\ResponseInterface|string
+     */
     public static function post($uri, $data = []){
         return self::call($uri, $method = 'POST', $data );
     }
+
+    /**
+     * @param $uri
+     * @param array $data
+     * @return null|\Psr\Http\Message\ResponseInterface|string
+     */
     public static function put($uri, $data = []){
         return self::call($uri,  $method = 'PUT', $data );
     }
 
+    /**
+     * @param $uri
+     * @param array $data
+     * @return null|\Psr\Http\Message\ResponseInterface|string
+     */
     public static function delete($uri, $data = []){
         // Delete is not implemented. To delete a resource use PUT verb and change the field is_valid
         $data['is_valid'] = false;

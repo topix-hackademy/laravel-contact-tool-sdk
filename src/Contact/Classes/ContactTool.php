@@ -4,152 +4,112 @@ namespace Topix\Hackademy\ContactToolSdk\Contact\Classes;
 
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Database\Eloquent\Collection;
+use Topix\Hackademy\ContactToolSdk\Api\Contract\iAnagrafica;
 use Topix\Hackademy\ContactToolSdk\Api\Entities\Company;
 use Topix\Hackademy\ContactToolSdk\Api\Entities\Contact;
 use Topix\Hackademy\ContactToolSdk\Contact\Contracts\iReferable;
-use Topix\Hackademy\ContactToolSdk\Contact\Models\Contact as LocalContact;
+
 
 
 class ContactTool {
 
+
+    /**
+     * Array of necessary api entities
+     * @var array
+     */
     public $APIentities = [
         'contact' => Contact::class,
         'company' => Company::class
     ];
+
+
+    /**
+     * @param iReferable $referable
+     * @param $data
+     * @param null $ref
+     * @return bool|\Illuminate\Support\Collection|null|\Psr\Http\Message\ResponseInterface|string
+     */
+    public function createContact(iReferable $referable, $data, $ref = null)
+    {
+        return $this->createReference($referable, 'contact', $data, $ref);
+    }
+
+    /**
+     * @param iReferable $referable
+     * @param $data
+     * @param null $ref
+     * @return bool|\Illuminate\Support\Collection|null|\Psr\Http\Message\ResponseInterface|string
+     */
+    public function createCompany(iReferable $referable, $data, $ref = null)
+    {
+        return $this->createReference($referable, 'company', $data, $ref);
+    }
+    /*
+   * Usage:   Create Local An remote Contact
+   * Return:  Collection of Remote Contact data
+   * Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
+   */
+    /**
+     * @param iReferable $referable
+     * @param $ContactType
+     * @param array $data
+     * @param null $remoteId
+     * @return bool|\Illuminate\Support\Collection|null|\Psr\Http\Message\ResponseInterface|string
+     */
+    private function createReference(iReferable $referable, $ContactType, Array $data, $remoteId = null)
+    {
+
+        // If not local reference
+        if (!RefarableTools::hasLocalReference($referable)) {
+            $results = false;
+            if ($remoteId != null) {
+                /**
+                 * @var $APIentity iAnagrafica
+                 */
+                $APIentity = new $this->APIentities[$ContactType];
+                //TODO: testare perché collection non ha accesso array
+                $results = $APIentity::update($remoteId, $data);
+            } else {
+                // If only remote exist create local
+                $results = $this->createExternalContact($ContactType, $data);
+            }
+            if (!$results && !$results instanceof Response) RefarableTools::createLocalReference($referable, $results['id'], $this->APIentities[$ContactType]);
+            return $results;
+        }
+        return $this->getReference($referable);
+    }
 
     /*
     *   Usage:   Get Remote Contact data
     *   Return:  Collection of Remote Contact data
     *   Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
     */
+    /**
+     * get the remote reference of the iReferable object
+     * @param iReferable $referable
+     * @return bool|\Illuminate\Support\Collection|null|\Psr\Http\Message\ResponseInterface|string
+     */
     public function getReference(iReferable $referable){
 
-        if( $referable->checkIfLocalExist() ){
+        if( RefarableTools::hasLocalReference($referable) ){
 
-            $contactType = $referable->getLocalReference()->external_entity_name;
-            $contactId = $referable->getLocalReference()->external_id;
+            $reference = RefarableTools::getLocalReference($referable);
+            $contactType = $reference->external_entity_name;
+            $contactId = $reference->external_id;
 
+            /**
+             * @var $APIentity iAnagrafica
+             */
             $APIentity = new $contactType();
-            $results = $APIentity->get($contactId);
-
-            if( ! $results instanceof Response ) return $this->jsonToCollection($results);;
+            $results = $APIentity::get($contactId);
+            /*
+             * exception???
+             */
+            if( ! $results instanceof Response ) return static::jsonToCollection($results);;
             return $results;
         }
         return false;
-
-    }
-
-    public function getContactByEmail($email){
-
-        $contactType = $this->APIentities['contact'];
-        $APIentity = new $contactType();
-        $results = $APIentity->getByEmail($email);
-
-        if( ! $results instanceof Response )return $this->jsonToCollection($results);
-        return $results;
-
-    }
-
-    public function getCompanyByCode($code){
-
-        $contactType = $this->APIentities['company'];
-        $APIentity = new $contactType();
-        $results = $APIentity->getByCode($code);
-
-        if( ! $results instanceof Response )return $this->jsonToCollection($results);
-        return $results;
-
-    }
-
-    public function getAllReference($contactType){
-
-        $contactType = $this->APIentities[$contactType];
-        $APIentityInstance = new $contactType();
-
-        $localReferenceFiltered = LocalContact::where('external_entity_name', $contactType)->get();
-
-        $results = new Collection();
-
-        foreach($localReferenceFiltered as $local){
-
-            $id = $local->external_id;
-
-            $response = $APIentityInstance->get($id);
-
-            if( ! $response instanceof Response)
-                $results[] = json_decode($response);
-
-        }
-        return $results;
-
-    }
-
-    /*
-       * Usage:   Create Local An remote Contact
-       * Return:  Collection of Remote Contact data
-       * Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
-       */
-    private function createReference(iReferable $referable, $ContactType, Array $data, $remoteId = null){
-
-        // get external data if exists
-        $external = $this->getReference($referable) ;
-
-        // If a local and remote ref exist update the remote
-        if( $referable->checkIfLocalExist() && ! $external instanceof Response )
-            return $this->updateReference($referable, $data);
-
-        // If local and remote doesnt exist create both
-        if( ! $referable->checkIfLocalExist()) {
-
-            if( $remoteId != null ){
-                $APIentity = new $this->APIentities[$ContactType];
-                $results = $this->jsonToCollection($APIentity->update($remoteId ,$data));
-            }
-            else
-                $results = $this->createExternalContact($ContactType, $data);
-
-
-            // Check if results returns an error
-            if (!$results instanceof Response) $referable->createLocalReference($results['id'], $this->APIentities[$ContactType]);
-            return $results;
-        }
-        // If only remote exist create local
-        else {
-            if (!$external instanceof Response) $referable->createLocalReference($external['id'], $this->APIentities[$ContactType]);
-            return $external;
-        }
-
-    }
-
-    public function findRemote($contactType, Array $data){
-
-        $APIentity = new $this->APIentities[$contactType];
-        $idExist = isset($data['id']);
-        $remote = $idExist? $APIentity->get($data['id']) : false;
-
-        // If data contains an id - assume it exist on remote
-        if( $remote )
-            return $remote;
-
-        // If data doesn't contains an id - search remote by field
-        if($contactType == 'company')
-            return $this->getCompanyByCode($data['company_tax_code']);
-
-        if($contactType == 'contact')
-            return $this->getContactByEmail($data['contact_email']);
-
-        return false;
-
-    }
-
-    public function createContact(iReferable $referable, $data, $ref = null)
-    {
-        return $this->createReference($referable, 'contact', $data, $ref);
-    }
-
-    public function createCompany(iReferable $referable, $data, $ref = null)
-    {
-        return $this->createReference($referable, 'company', $data, $ref);
     }
 
     /*
@@ -160,13 +120,86 @@ class ContactTool {
     public function updateReference(iReferable $referable, $data){
 
         // Get Local Polimorph related data
-        $contactType = $referable->getLocalReference()->external_entity_name;
-        $contactId = $referable->getLocalReference()->external_id;
+        $reference = RefarableTools::getLocalReference($referable);
+
+        $contactType = $reference->external_entity_name;
+        $contactId = $reference->external_id;
 
         // Update Remote Entity trough API
-        $results = $this->updateExternalContact($referable, $data);
+        $results = $this->updateExternalContact($contactType, $contactId, $data);
 
         return $results;
+
+    }
+    /**
+     * get a single contact from main remote by email
+     * @param $email string
+     * @return \Illuminate\Support\Collection|null|\Psr\Http\Message\ResponseInterface|string
+     */
+    public function getContactByEmail($email){
+
+        $contactType = $this->APIentities['contact'];
+        /**
+         * @var $APIentity Contact
+         */
+        $APIentity = new $contactType();
+        $results = $APIentity::getByEmail($email);
+
+        if( ! $results instanceof Response )return static::jsonToCollection($results);
+        return $results;
+
+    }
+    /**
+     * get a single company from main remote by code
+     * @param $code string
+     * @return \Illuminate\Support\Collection|null|\Psr\Http\Message\ResponseInterface|string
+     */
+    public function getCompanyByCode($code){
+
+        $contactType = $this->APIentities['company'];
+        /**
+         * @var $APIentity Company
+         */
+        $APIentity = new $contactType();
+        $results = $APIentity::getByCode($code);
+
+        if( ! $results instanceof Response )return $this->jsonToCollection($results);
+        return $results;
+
+    }
+
+    /**
+     *
+     * Get all remote entities for a given entity type
+     *
+     * @param $contactType string
+     * @return array|Collection
+     */
+    public function getAllReference($contactType){
+
+        $contactType = $this->APIentities[$contactType];
+        /**
+         * @var $APIentityInstance iAnagrafica
+         */
+        $APIentityInstance = new $contactType();
+
+        $results = $APIentityInstance::all();
+//        $localReferenceFiltered = LocalContact::where('external_entity_name', $contactType)->get();
+//
+//        $results = new Collection();
+//
+//        foreach($localReferenceFiltered as $local){
+//
+//            $id = $local->external_id;
+//
+//            $response = $APIentityInstance->get($id);
+//
+//            if( ! $response instanceof Response)
+//                $results[] = json_decode($response);
+//
+//        }
+        //TODO: probabilmente i dati saranno formattati in maniera diversa
+        return static::jsonToCollection($results);
 
     }
 
@@ -194,11 +227,7 @@ class ContactTool {
     * Return:  Collection with updated data
     * Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
     */
-    public function updateExternalContact(iReferable $referable, Array $contactData){
-
-        // Get Local Polimorph related data
-        $contactType = $referable->getLocalReference()->external_entity_name;
-        $contactId = $referable->getLocalReference()->external_id;
+    public function updateExternalContact($contactType, $contactId, Array $contactData){
 
         // Update Remote Entity trough API
         $APIentity = new $contactType();
@@ -212,7 +241,7 @@ class ContactTool {
     /* Helper methods*/
 
     // Convert json to collection
-    public function jsonToCollection($json){
+    private static function jsonToCollection($json){
         return collect(\GuzzleHttp\json_decode($json));
     }
 
