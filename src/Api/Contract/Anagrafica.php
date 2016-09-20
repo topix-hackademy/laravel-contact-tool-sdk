@@ -29,5 +29,5 @@ abstract class Anagrafica implements iAnagrafica
         return false;
     }
 
-    public static abstract function validate($data);
+    public static function validate($data){}
 }
