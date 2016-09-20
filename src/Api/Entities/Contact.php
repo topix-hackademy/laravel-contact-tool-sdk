@@ -14,7 +14,7 @@ class Contact extends Anagrafica
 
     public static function validate($data)
     {
-        // TODO: Implement validate() method.ù
+        // TODO: Implement validate() method
         return true;
     }
 }

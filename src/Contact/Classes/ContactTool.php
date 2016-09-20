@@ -9,8 +9,6 @@ use Topix\Hackademy\ContactToolSdk\Api\Entities\Company;
 use Topix\Hackademy\ContactToolSdk\Api\Entities\Contact;
 use Topix\Hackademy\ContactToolSdk\Contact\Contracts\iReferable;
 
-
-
 class ContactTool {
 
 
@@ -61,23 +59,29 @@ class ContactTool {
     {
 
         // If not local reference
-        if (!RefarableTools::hasLocalReference($referable)) {
-            $results = false;
+        if ( ! ReferableTools::hasLocalReference($referable) ) {
+
             if ($remoteId != null) {
                 /**
                  * @var $APIentity iAnagrafica
                  */
                 $APIentity = new $this->APIentities[$ContactType];
-                //TODO: testare perché collection non ha accesso array
                 $results = $APIentity::update($remoteId, $data);
-            } else {
+            }
+            else {
                 // If only remote exist create local
                 $results = $this->createExternalContact($ContactType, $data);
             }
-            if (!$results && !$results instanceof Response) RefarableTools::createLocalReference($referable, $results['id'], $this->APIentities[$ContactType]);
+
+            if (!$results && !$results instanceof Response) ReferableTools::createLocalReference($referable, $results['id'], $this->APIentities[$ContactType]);
+
             return $results;
+
         }
+
+        // @TODO: Check if this is the correct return format
         return $this->getReference($referable);
+
     }
 
     /*
@@ -92,10 +96,12 @@ class ContactTool {
      */
     public function getReference(iReferable $referable){
 
-        if( RefarableTools::hasLocalReference($referable) ){
+        if( ReferableTools::hasLocalReference($referable) ){
 
-            $reference = RefarableTools::getLocalReference($referable);
+            $reference = ReferableTools::getLocalReference($referable)->first();
+
             $contactType = $reference->external_entity_name;
+
             $contactId = $reference->external_id;
 
             /**
@@ -120,7 +126,7 @@ class ContactTool {
     public function updateReference(iReferable $referable, $data){
 
         // Get Local Polimorph related data
-        $reference = RefarableTools::getLocalReference($referable);
+        $reference = ReferableTools::getLocalReference($referable)->first();
 
         $contactType = $reference->external_entity_name;
         $contactId = $reference->external_id;

@@ -66,5 +66,6 @@ trait Referable
     {
         return app('contactTool')->createContact($this, $data, $id);
     }
+    
 
 }
