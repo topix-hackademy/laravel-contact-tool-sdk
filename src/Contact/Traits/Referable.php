@@ -8,8 +8,6 @@ use Topix\Hackademy\ContactToolSdk\Contact\Models\Contact;
 trait Referable
 {
 
-    public $referenceType = null;
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
