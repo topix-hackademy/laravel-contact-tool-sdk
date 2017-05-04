@@ -189,7 +189,8 @@ class ContactTool {
         $APIentity = new $entity();
         $results = $APIentity::getFreesearch($freesearch);
 
-        return $this->jsonToCollection($results);
+		if( ! $results instanceof Response )return $this->jsonToCollection($results);
+        return $results;
 
     }
 

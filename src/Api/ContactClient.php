@@ -63,9 +63,10 @@ class ContactClient
         try {
             $response = $client->request($method, config('anagrafica.api-base-uri').$uri, $options);
         } catch (ClientException $e) {
+			error_log("call: got client exception " . $e->getMessage());
             return $e->getResponse();
         }
-
+		
         return $response->getBody()->getContents();
 
     }
