@@ -12,6 +12,10 @@ class Company extends Anagrafica
         return ContactClient::get('/company-by-code/'.$code);
     }
 
+    public static function getFreesearch($freesearch){
+        return ContactClient::get('/company-freesearch/'.$freesearch);
+    }
+
 
     public static function validate($data)
     {

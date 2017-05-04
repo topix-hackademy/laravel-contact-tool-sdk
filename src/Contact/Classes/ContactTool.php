@@ -174,6 +174,27 @@ class ContactTool {
 
     }
 
+
+    /**
+     * get all companies from main remote filtered by freesearch
+     * @param $freesearch string
+     * @return array|Collection
+     */
+    public function getCompaniesFreesearch($freesearch=""){
+
+        $entity = $this->APIentities['company'];
+        /**
+         * @var $APIentity Company
+         */
+        $APIentity = new $entity();
+        $results = $APIentity::getFreesearch($freesearch);
+
+        return $this->jsonToCollection($results);
+
+    }
+
+
+
     /**
      *
      * Get all remote entities for a given entity type
