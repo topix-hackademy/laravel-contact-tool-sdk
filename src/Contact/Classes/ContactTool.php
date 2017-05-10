@@ -137,6 +137,7 @@ class ContactTool {
         return $results;
 
     }
+	
     /**
      * get a single contact from main remote by email
      * @param $email string
@@ -155,6 +156,45 @@ class ContactTool {
         return $results;
 
     }
+    /**
+     * get a single contact from main remote by user name
+     * @param $$username string
+     * @return \Illuminate\Support\Collection|null|\Psr\Http\Message\ResponseInterface|string
+     */
+    public function getContactByUsername($username){
+
+        $contactType = $this->APIentities['contact'];
+        /**
+         * @var $APIentity Contact
+         */
+        $APIentity = new $contactType();
+        $results = $APIentity::getByUsername($username);
+
+        if( ! $results instanceof Response )return static::jsonToCollection($results);
+        return $results;
+
+    }
+
+    /**
+     * get a single contact from main remote by remote id
+     * @param $extid integer
+     */
+    public function getContactById($extid){
+
+        $contactType = $this->APIentities['contact'];
+        /**
+         * @var $APIentity Contact
+         */
+        $APIentity = new $contactType();
+        $results = $APIentity::get($extid);
+
+        if( ! $results instanceof Response )return static::jsonToCollection($results);
+        return $results;
+
+    }
+
+
+
     /**
      * get a single company from main remote by code
      * @param $code string
@@ -265,6 +305,17 @@ class ContactTool {
         if( ! $results instanceof Response ) return  $this->jsonToCollection($results);
         return $results;
     }
+
+    /*
+    * Usage:   Update Remote Entity trough API
+    * Return:  Collection with updated data
+    * Error:   Returns a 'GuzzleHttp\Psr7\Response' Object
+    */
+    public function updateExternalContactByApiEntityName($contactTypeName, $contactId, Array $contactData){
+		$contactType=$this->APIentities[$contactTypeName];
+        return $this->updateExternalContact($contactType, $contactId, $contactData);
+    }
+
 
     /* Helper methods*/
 

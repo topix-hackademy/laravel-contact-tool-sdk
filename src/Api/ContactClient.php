@@ -30,7 +30,7 @@ class ContactClient
      * @return null|\Psr\Http\Message\ResponseInterface|string
      */
     public static function put($uri, $data = []){
-        return self::call($uri,  $method = 'PUT', $data );
+		return self::call($uri,  $method = 'PUT', $data );
     }
 
     /**

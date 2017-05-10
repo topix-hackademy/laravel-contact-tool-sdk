@@ -9,7 +9,11 @@ class Contact extends Anagrafica
     protected static $entity = 'contact';
 
     public static function getByEmail($email){
-        return ContactClient::get('/contact-by-email/'.$email);
+        return ContactClient::get('/contact-by-email/' . rawurlencode($email));
+    }
+
+    public static function getByUsername($username){
+        return ContactClient::get('/contact-by-username/' . rawurlencode($username));
     }
 
     public static function validate($data)
